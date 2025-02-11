@@ -3,32 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Нажмите чтобы услышать музыку</title>
+    <title>Радужный фон + Музыка + Облака</title>
     <style>
-        #game {
-            position: absolute;
-            top: 20px; /* Перемещаем игру вниз */
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-        }
-
-        #cat-container {
-            width: 100px;
-            height: 100px;
-            position: absolute;
-            background-image: url('https://cataas.com/cat'); /* Рабочая ссылка */
-            background-size: cover;
-            cursor: pointer;
-            border-radius: 50%;
-        }
-
-        #score {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
         body {
             margin: 0;
             height: 100vh;
@@ -39,7 +15,7 @@
             font-family: Arial, sans-serif;
             overflow: hidden;
             color: white;
-            background: linear-gradient(270deg, #2c3e50, #34495e, #16a085, #1abc9c); /* Темный приглушенный фон */
+            background: linear-gradient(270deg, #2c3e50, #34495e, #16a085, #1abc9c);
             background-size: 400% 400%;
             animation: rainbow 10s infinite linear;
         }
@@ -48,6 +24,49 @@
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        .cloud {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0.6;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.5); /* Добавление легкой тени */
+            animation: moveClouds linear infinite;
+        }
+
+
+        .cloud1 {
+            width: 200px;
+            height: 120px;
+            top: 20%;
+            left: -250px;
+            animation-duration: 30s;
+        }
+
+        .cloud2 {
+            width: 250px;
+            height: 150px;
+            top: 40%;
+            left: -300px;
+            animation-duration: 40s;
+        }
+
+        .cloud3 {
+            width: 180px;
+            height: 110px;
+            top: 60%;
+            left: -200px;
+            animation-duration: 50s;
+        }
+
+        @keyframes moveClouds {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(100vw); /* Облака двигаются за пределы экрана */
+            }
         }
 
         h1 {
@@ -60,11 +79,41 @@
             font-size: 40px;
             text-shadow: 0 0 10px black;
         }
+
+        #game {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        #cat-container {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            background-image: url('https://cataas.com/cat');
+            background-size: cover;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        #score {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Облака -->
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+
     <div>
-        <h1>Нажмите чтобы услышать музыку</h1>
+        <h1>Радужный Фон + Музыка + Облака!</h1>
         <p>Она играет на фоне 🎶</p>
     </div>
 
@@ -76,7 +125,6 @@
     </audio>
 
     <script>
-        // Попытка запустить музыку после клика
         document.addEventListener('click', function() {
             let audio = document.getElementById('bg-music');
             if (audio.paused) {
@@ -85,9 +133,8 @@
         });
     </script>
 
-    <!-- Игровая зона -->
     <div id="game">
-        <h2>Поймай котика! 🐱</h2>
+        <h2>Найди котика! 🐱</h2>
         <p id="score">Очки: 0</p>
         <div id="cat-container"></div>
     </div>
@@ -97,10 +144,9 @@
         const scoreElement = document.getElementById('score');
         const catContainer = document.getElementById('cat-container');
         
-        // Функция для перемещения котика в случайное место
         function moveCat() {
-            const maxX = window.innerWidth - 100;  // Максимальная позиция по X
-            const maxY = window.innerHeight - 100; // Максимальная позиция по Y
+            const maxX = window.innerWidth - 100;
+            const maxY = window.innerHeight - 100;
             const randomX = Math.random() * maxX;
             const randomY = Math.random() * maxY;
 
@@ -108,16 +154,15 @@
             catContainer.style.top = `${randomY}px`;
         }
 
-        // Обработчик клика на котика
         catContainer.addEventListener('click', function() {
-            score++;  // Увеличиваем очки
-            scoreElement.textContent = `Очки: ${score}`;  // Обновляем очки
-            moveCat();  // Перемещаем котика
+            score++;
+            scoreElement.textContent = `Очки: ${score}`;
+            moveCat();
         });
 
-        // Запуск игры
-        moveCat();  // Переместить котика в начальное место
-        setInterval(moveCat, 2000);  // Котик будет перемещаться каждые 2 секунды
+        moveCat();
+        setInterval(moveCat, 2000);
     </script>
+
 </body>
 </html>
