@@ -88,5 +88,32 @@
     <p id="score">Очки: 0</p>
     <div id="cat-container"></div>
 </div>
+<script>
+    let score = 0;
+    const scoreElement = document.getElementById('score');
+    const catContainer = document.getElementById('cat-container');
+    
+    // Функция для перемещения котика в случайное место
+    function moveCat() {
+        const maxX = window.innerWidth - 100;  // Максимальная позиция по X
+        const maxY = window.innerHeight - 100; // Максимальная позиция по Y
+        const randomX = Math.random() * maxX;
+        const randomY = Math.random() * maxY;
+
+        catContainer.style.left = `${randomX}px`;
+        catContainer.style.top = `${randomY}px`;
+    }
+
+    // Обработчик клика на котика
+    catContainer.addEventListener('click', function() {
+        score++;  // Увеличиваем очки
+        scoreElement.textContent = `Очки: ${score}`;  // Обновляем очки
+        moveCat();  // Перемещаем котика
+    });
+
+    // Запуск игры
+    moveCat();  // Переместить котика в начальное место
+    setInterval(moveCat, 2000);  // Котик будет перемещаться каждые 2 секунды
+</script>
 </body>
 </html>
