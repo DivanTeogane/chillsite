@@ -329,6 +329,45 @@
             }
         });
     </script>
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+    const socket = io("http://localhost:3000"); // Подключаемся к серверу
 
+    socket.on("connect", () => {
+        console.log("Подключено к серверу");
+    });
+
+    socket.on("chat message", (msg) => {
+        const messagesDiv = document.getElementById('chat-messages');
+        const newMessage = document.createElement('div');
+        newMessage.textContent = msg;
+        messagesDiv.appendChild(newMessage);
+    
+        // Прокрутка вниз
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    
+        // Сохраняем в localStorage (если надо)
+        let messages = JSON.parse(localStorage.getItem('messages')) || [];
+        messages.push(msg);
+        localStorage.setItem('messages', JSON.stringify(messages));
+    });
+
+
+    function sendMessage() {
+        const input = document.getElementById("chat-input");
+        const message = input.value.trim();
+        if (message) {
+            socket.emit("chat message", { username, message }); // Теперь отправляем объект
+            input.value = ""; // Очищаем поле ввода
+        }
+    }
+
+    // Модифицируем обработчик Enter, чтобы он работал с sendMessage()
+    document.getElementById('chat-input').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && event.target.value.trim() !== '') {
+            sendMessage();
+        }
+    });
+</script>
 </body>
 </html>
