@@ -31,7 +31,7 @@
             background-color: white;
             border-radius: 50%;
             opacity: 0.6;
-            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.5); /* Добавление легкой тени */
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.5);
             animation: moveClouds linear infinite;
         }
 
@@ -64,7 +64,7 @@
                 transform: translateX(0);
             }
             100% {
-                transform: translateX(100vw); /* Облака двигаются за пределы экрана */
+                transform: translateX(100vw);
             }
         }
 
@@ -103,12 +103,20 @@
             margin-bottom: 20px;
         }
 
+        #coin-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            color: gold;
+        }
+
         /* Стиль для конфетти */
         .confetti {
             position: absolute;
             width: 10px;
             height: 10px;
-            background-color: #E0FFFF; /* Цвет конфетти */
+            background-color: #E0FFFF;
             border-radius: 50%;
             animation: confettiAnimation 1s forwards;
         }
@@ -160,9 +168,13 @@
         <div id="cat-container"></div>
     </div>
 
+    <div id="coin-container">Монетки: 0</div>
+
     <script>
         let score = 0;
+        let coins = 0;
         const scoreElement = document.getElementById('score');
+        const coinElement = document.getElementById('coin-container');
         const catContainer = document.getElementById('cat-container');
 
         // Функция для перемещения котика
@@ -196,7 +208,6 @@
             }
         }
 
-
         catContainer.addEventListener('click', function() {
             score++;
             scoreElement.textContent = `Очки: ${score}`;
@@ -205,6 +216,12 @@
             // Проверяем, если очки кратны 10, создаем конфетти
             if (score % 10 === 0) {
                 createConfetti();
+            }
+
+            // Если очки кратны 100, увеличиваем количество монет
+            if (score % 100 === 0) {
+                coins++;
+                coinElement.textContent = `Монетки: ${coins}`;
             }
         });
 
