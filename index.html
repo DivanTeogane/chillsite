@@ -306,14 +306,19 @@
 
             // Сохраняем сообщения в localStorage
             let messages = JSON.parse(localStorage.getItem('messages')) || [];
-            messages.push(`${username}: ${message}`);
-            localStorage.setItem('messages', JSON.stringify(messages));
+            if (!messages.includes(message)) {
+                messages.push(`${username}: ${message}`);
+                localStorage.setItem('messages', JSON.stringify(messages));
+            }
         }
 
         // Загружаем старые сообщения из localStorage
         const savedMessages = JSON.parse(localStorage.getItem('messages')) || [];
         savedMessages.forEach(message => {
-            addMessage(message);
+            const messagesDiv = document.getElementById('chat-messages');
+            const newMessage = document.createElement('div');
+            newMessage.textContent = message;
+            messagesDiv.appendChild(newMessage);
         });
 
         // Слушаем ввод сообщения
