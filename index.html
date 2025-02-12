@@ -108,7 +108,7 @@
             position: absolute;
             width: 10px;
             height: 10px;
-            background-color: #ff69b4; /* Цвет конфетти */
+            background-color: #E0FFFF; /* Цвет конфетти */
             border-radius: 50%;
             animation: confettiAnimation 1s forwards;
         }
@@ -175,22 +175,27 @@
             catContainer.style.left = `${randomX}px`;
             catContainer.style.top = `${randomY}px`;
         }
-
+        
         // Функция для создания конфетти
         function createConfetti() {
             for (let i = 0; i < 30; i++) {
                 const confetti = document.createElement('div');
                 confetti.classList.add('confetti');
-                confetti.style.left = `${Math.random() * window.innerWidth}px`; // случайная позиция по X
+        
+                // Случайные позиции по X и Y
+                confetti.style.left = `${Math.random() * window.innerWidth}px`;
+                confetti.style.top = `${Math.random() * window.innerHeight}px`;
+        
                 confetti.style.animationDelay = `${Math.random() * 2}s`; // случайная задержка
                 document.body.appendChild(confetti);
-
+        
                 // Удаляем конфетти через время
                 setTimeout(() => {
                     confetti.remove();
                 }, 2000);
             }
         }
+
 
         catContainer.addEventListener('click', function() {
             score++;
