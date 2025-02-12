@@ -171,11 +171,16 @@
     <div id="coin-container">Монетки: 0</div>
 
     <script>
-        let score = 0;
-        let coins = 0;
+        // Загружаем сохраненные данные из localStorage (если есть)
+        let score = localStorage.getItem('score') ? parseInt(localStorage.getItem('score')) : 0;
+        let coins = localStorage.getItem('coins') ? parseInt(localStorage.getItem('coins')) : 0;
         const scoreElement = document.getElementById('score');
         const coinElement = document.getElementById('coin-container');
         const catContainer = document.getElementById('cat-container');
+
+        // Обновляем отображение очков и монет
+        scoreElement.textContent = `Очки: ${score}`;
+        coinElement.textContent = `Монетки: ${coins}`;
 
         // Функция для перемещения котика
         function moveCat() {
@@ -187,7 +192,7 @@
             catContainer.style.left = `${randomX}px`;
             catContainer.style.top = `${randomY}px`;
         }
-        
+
         // Функция для создания конфетти
         function createConfetti() {
             for (let i = 0; i < 30; i++) {
@@ -213,6 +218,9 @@
             scoreElement.textContent = `Очки: ${score}`;
             moveCat();
 
+            // Сохраняем обновленные очки в localStorage
+            localStorage.setItem('score', score);
+
             // Проверяем, если очки кратны 10, создаем конфетти
             if (score % 10 === 0) {
                 createConfetti();
@@ -222,6 +230,7 @@
             if (score % 100 === 0) {
                 coins++;
                 coinElement.textContent = `Монетки: ${coins}`;
+                localStorage.setItem('coins', coins); // Сохраняем монеты
             }
         });
 
