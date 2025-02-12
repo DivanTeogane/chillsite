@@ -223,6 +223,67 @@
             localStorage.setItem('username', username);
         }
 
+        // Получаем очки и монеты из localStorage
+        let score = localStorage.getItem('score') ? parseInt(localStorage.getItem('score')) : 0;
+        let coins = localStorage.getItem('coins') ? parseInt(localStorage.getItem('coins')) : 0;
+
+        // Обновляем отображение очков
+        const scoreElement = document.getElementById('score');
+        scoreElement.textContent = `Очки: ${score}`;
+
+        // Функция для перемещения котика
+        const catContainer = document.getElementById('cat-container');
+        function moveCat() {
+            const maxX = window.innerWidth - 100;
+            const maxY = window.innerHeight - 100;
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            catContainer.style.left = `${randomX}px`;
+            catContainer.style.top = `${randomY}px`;
+        }
+        
+        // Функция для создания конфетти
+        function createConfetti() {
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+        
+                // Случайные позиции по X и Y
+                confetti.style.left = `${Math.random() * window.innerWidth}px`;
+                confetti.style.top = `${Math.random() * window.innerHeight}px`;
+        
+                confetti.style.animationDelay = `${Math.random() * 2}s`; // случайная задержка
+                document.body.appendChild(confetti);
+        
+                // Удаляем конфетти через время
+                setTimeout(() => {
+                    confetti.remove();
+                }, 2000);
+            }
+        }
+
+        // Функция для начисления монет
+        function updateCoins() {
+            if (score % 100 === 0 && score !== 0) {
+                coins++;
+                localStorage.setItem('coins', coins);
+                createConfetti();
+            }
+        }
+
+        // Обработчик клика по котику
+        catContainer.addEventListener('click', function() {
+            score++;
+            localStorage.setItem('score', score);
+            scoreElement.textContent = `Очки: ${score}`;
+            updateCoins();
+            moveCat();
+        });
+
+        // Инициализация котика
+        moveCat();
+
         // Открытие/закрытие чата
         document.getElementById('chat-toggle').addEventListener('click', function() {
             const chat = document.getElementById('chat-container');
@@ -233,7 +294,7 @@
             }
         });
 
-        // Функция для добавления сообщений
+        // Функция для добавления сообщений в чат
         function addMessage(message) {
             const messagesDiv = document.getElementById('chat-messages');
             const newMessage = document.createElement('div');
@@ -242,7 +303,18 @@
 
             // Прокручиваем чат вниз
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            // Сохраняем сообщения в localStorage
+            let messages = JSON.parse(localStorage.getItem('messages')) || [];
+            messages.push(`${username}: ${message}`);
+            localStorage.setItem('messages', JSON.stringify(messages));
         }
+
+        // Загружаем старые сообщения из localStorage
+        const savedMessages = JSON.parse(localStorage.getItem('messages')) || [];
+        savedMessages.forEach(message => {
+            addMessage(message);
+        });
 
         // Слушаем ввод сообщения
         document.getElementById('chat-input').addEventListener('keydown', function(event) {
